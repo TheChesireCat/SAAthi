@@ -1,6 +1,8 @@
 # SAAthi
 
-A Repository for the school of Arts and Aesthetics Dissertations
+A Repository for [School of Arts and Aesthetics](https://www.jnu.ac.in/saa) Dissertations
+
+Dedicated to the Artists and Historians I know
 
 Notes:
 
