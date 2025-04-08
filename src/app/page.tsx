@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import Image from "next/image"
+// import Image from "next/image"
 
 // Define the thesis type based on the JSON structure
 type Tag = {
