@@ -386,7 +386,7 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
        
       <PanelGroup direction="horizontal">
         {/* Left Panel: Metadata editor */}
-        <Panel defaultSize={50} minSize={20}>
+        <Panel defaultSize={30} minSize={20}>
           <ScrollArea className="h-full p-4">
             <div className="space-y-4">
               <div className="flex justify-between items-center mb-4">
@@ -715,7 +715,7 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
         </Panel>
         <PanelResizeHandle className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 active:bg-gray-500" />
 
-        <Panel defaultSize={50} minSize={20}>
+        <Panel defaultSize={70} minSize={20}>
           {currentThesis.pdf_url ? (
             <iframe src={currentThesis.pdf_url} className="w-full h-full" />
           ) : (
