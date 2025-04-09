@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useRef } from "react"
 
 import Link from "next/link"
-import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react"
+import { BugIcon, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -131,7 +131,8 @@ export default function LibraryPage() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <BookOpen className="h-8 w-8 mr-2" />
+                {/* <BookOpen className="h-8 w-8 mr-2" /> */}
+                <BugIcon className="h-8 w-8 mr-2" />
                 <span className="text-2xl font-bold">SAAथी</span>
               </div>
             </div>
@@ -151,11 +152,11 @@ export default function LibraryPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="bg-primary text-primary-foreground sticky top-0 z-10">
+      <header className="bg-primary text-primary-foreground sticky top-0 z-10 border-b-3 border-black">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <BookOpen className="h-8 w-8 mr-2" />
+              <BugIcon className="h-8 w-8 mr-2" />
 
               <Link href="/">
                 <span className="text-2xl font-bold">SAAथी</span>
@@ -193,7 +194,7 @@ export default function LibraryPage() {
           </div>
         </div>
       </header>
-      <div className="bg-secondary">
+      <div className="bg-secondary border-b-3 border-bg-secondary">
         <div className="container mx-auto px-5 py-2">
           <ToggleGroup type="single" value={view} onValueChange={(value) => value && setView(value)}>
             <ToggleGroupItem className="p-4" value="year">Year</ToggleGroupItem>
@@ -219,7 +220,7 @@ export default function LibraryPage() {
       </main>
       <footer className="bg-primary text-primary-foreground py-4">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; {new Date().getFullYear()} ThesisLibrary. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Genuine. No Warranty. Horn OK Please.</p>
         </div>
       </footer>
     </div>

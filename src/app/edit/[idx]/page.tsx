@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { X, Plus, Copy, ChevronLeft, ChevronRight, BookOpen } from "lucide-react"
+import { X, Plus, Copy, ChevronLeft, ChevronRight, BugIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -362,11 +362,11 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
   }
 
   return (
-    <><header className="bg-primary text-primary-foreground sticky top-0 z-10">
+    <><header className="bg-primary text-primary-foreground sticky top-0 z-10  border-b-3 border-black">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <BookOpen className="h-8 w-8 mr-2" />
+            <BugIcon className="h-8 w-8 mr-2" />
 
             <Link href="/">
               <span className="text-2xl font-bold">SAAथी</span>
