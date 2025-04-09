@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   // add picsum.photos to the allowed image domains
   images: {
-    domains: ["picsum.photos"],
+    domains: ["picsum.photos","huggingface.co"],
   },
 };
 

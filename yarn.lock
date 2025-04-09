@@ -285,6 +285,11 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@meprovas/meui@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@meprovas/meui/-/meui-0.1.3.tgz#05f2a2fdf425ddf184f7ae043519accf11f50e8a"
+  integrity sha512-iOnBy8icDwh4IxsgcIRLAg/D0YbynCSTHrNLNfRT5B2CqI+wl0igSqr1Q5YLNW6WCdg+9aezRXA5ZIGCeHe5lw==
+
 "@napi-rs/wasm-runtime@^0.2.8":
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.8.tgz#642e8390ee78ed21d6b79c467aa610e249224ed6"

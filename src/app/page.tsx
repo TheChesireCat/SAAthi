@@ -27,7 +27,8 @@ type Thesis = {
   "alt-title": string
   tags: Tag
   description: string
-  pdf_url: string
+  pdf_url: string,
+  img: string
 }
 
 type ThesesData = {
@@ -56,7 +57,7 @@ export default function LibraryPage() {
           setLoading(false)
         } else {
           // If not in localStorage, fetch from the URL
-          const response = await fetch("https://huggingface.co/natkite/saapdfs/raw/main/big_json_flat.json")
+          const response = await fetch("https://huggingface.co/natkite/saapdfs/raw/main/big_json_flat_v2.json")
           const data: ThesesData = await response.json()
 
           // Convert the object to an array with IDs
@@ -155,10 +156,13 @@ export default function LibraryPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <BookOpen className="h-8 w-8 mr-2" />
-              <span className="text-2xl font-bold">SAAथी</span>
+
+              <Link href="/">
+                <span className="text-2xl font-bold">SAAथी</span>
+              </Link>
             </div>
             <nav className="hidden md:block">
-              <ul className="flex space-x-4">
+              {/* <ul className="flex space-x-4">
                 <li>
                   <Link className="hover:text-primary-foreground/80" href="#">
                     Home
@@ -174,7 +178,7 @@ export default function LibraryPage() {
                     My Theses
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </nav>
             <div className="flex items-center">
               <Input
@@ -190,12 +194,12 @@ export default function LibraryPage() {
         </div>
       </header>
       <div className="bg-secondary">
-        <div className="container mx-auto px-4 py-2">
+        <div className="container mx-auto px-5 py-2">
           <ToggleGroup type="single" value={view} onValueChange={(value) => value && setView(value)}>
-            <ToggleGroupItem value="year">Year</ToggleGroupItem>
-            <ToggleGroupItem value="topic">Topics</ToggleGroupItem>
-            <ToggleGroupItem value="medium">Medium</ToggleGroupItem>
-            <ToggleGroupItem value="geographical">Geography</ToggleGroupItem>
+            <ToggleGroupItem className="p-4" value="year">Year</ToggleGroupItem>
+            <ToggleGroupItem className="p-4" value="topic">Topics</ToggleGroupItem>
+            <ToggleGroupItem className="p-4" value="medium">Medium</ToggleGroupItem>
+            <ToggleGroupItem className="p-4" value="geographical">Geography</ToggleGroupItem>
           </ToggleGroup>
         </div>
       </div>
@@ -259,25 +263,27 @@ function ThesisCarousel({ category, theses }: { category: string; theses: Thesis
         >
           {theses.map((thesis) => (
             <Link href={`/edit/${thesis.id}`} key={thesis.id}>
-              <Card className="flex-shrink-0 w-64 group cursor-pointer hover:shadow-lg transition-shadow duration-300">
+              <Card className="flex-shrink-0 w-64 group cursor-pointer border-3 border-black bg-white transition-all duration-200">
                 <CardContent className="p-0 relative">
-                  <div className="w-full h-40 bg-muted flex items-center justify-center">
-                    <BookOpen className="h-16 w-16 text-muted-foreground" />
-                    {/* <Image
-                       src={`https://picsum.photos/200/300` alt=}
-                       ></Image> */}
+                  <div className="w-full h-40 bg-white border-b-3 border-black flex items-center justify-center">
+                    <img
+                      src={`https://huggingface.co/natkite/saapdfs/resolve/main/imgs/${thesis.img}`}
+                      alt="Card Image"
+                      width={512}
+                      height={512}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-sm truncate">{thesis.title}</h3>
-                    <p className="text-xs text-muted-foreground truncate">{thesis.author}</p>
-                    <p className="text-xs text-muted-foreground">Year: {thesis.year}</p>
+                  <div className="p-4 bg-white">
+                    <h3 className="font-bold text-sm uppercase tracking-wider truncate">{thesis.title}</h3>
+                    <p className="text-xs text-black truncate">{thesis.author}</p>
+                    <p className="text-xs text-black">{thesis.year}</p>
                   </div>
-                  <div className="absolute inset-0 bg-black bg-opacity-75 text-white p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-y-auto">
-                    <h3 className="font-semibold text-sm mb-2">{thesis.title}</h3>
+                  <div className="absolute inset-0 bg-black bg-opacity-90 text-white p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 overflow-y-auto">
+                    <h3 className="font-bold text-sm uppercase mb-2">{thesis.title}</h3>
                     <p className="text-xs mb-1">Author: {thesis.author}</p>
                     <p className="text-xs mb-1">Year: {thesis.year}</p>
                     <p className="text-xs mb-1">Supervisor: {thesis.supervisors.join(", ")}</p>
-                    <p className="text-xs">Topics: {thesis.tags["topic-tags"].join(", ")}</p>
                   </div>
                 </CardContent>
               </Card>

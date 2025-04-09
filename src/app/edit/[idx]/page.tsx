@@ -367,27 +367,12 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 mr-2" />
-            <span className="text-2xl font-bold">SAAथी</span>
+
+            <Link href="/">
+              <span className="text-2xl font-bold">SAAथी</span>
+            </Link>
           </div>
-          <nav className="hidden md:block">
-            <ul className="flex space-x-4">
-              <li>
-                <Link className="hover:text-primary-foreground/80" href="/">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link className="hover:text-primary-foreground/80" href="#">
-                  Browse
-                </Link>
-              </li>
-              <li>
-                <Link className="hover:text-primary-foreground/80" href="#">
-                  My Theses
-                </Link>
-              </li>
-            </ul>
-          </nav>
+          
 
         </div>
       </div>
