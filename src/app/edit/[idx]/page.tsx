@@ -11,6 +11,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
 import Link from "next/link"
 
 
@@ -68,6 +72,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
     index: number
   } | null>(null)
   const [hasLocalChanges, setHasLocalChanges] = useState(false)
+
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
 
   const router = useRouter()
 
@@ -133,10 +140,14 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
       }
     }
 
+
+
     fetchData()
   }, [thesisId])
 
   const currentThesis = theses[currentIndex] || defaultThesis
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -187,9 +198,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
         prev.map((thesis, thesisIndex) =>
           thesisIndex === currentIndex
             ? {
-                ...thesis,
-                supervisors: newSupervisors,
-              }
+              ...thesis,
+              supervisors: newSupervisors,
+            }
             : thesis,
         ),
       )
@@ -207,9 +218,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
       prev.map((thesis, index) =>
         index === currentIndex
           ? {
-              ...thesis,
-              supervisors: newSupervisors,
-            }
+            ...thesis,
+            supervisors: newSupervisors,
+          }
           : thesis,
       ),
     )
@@ -225,9 +236,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
       prev.map((thesis, thesisIndex) =>
         thesisIndex === currentIndex
           ? {
-              ...thesis,
-              supervisors: newSupervisors,
-            }
+            ...thesis,
+            supervisors: newSupervisors,
+          }
           : thesis,
       ),
     )
@@ -244,9 +255,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
       prev.map((thesis, index) =>
         index === currentIndex
           ? {
-              ...thesis,
-              tags: newTags,
-            }
+            ...thesis,
+            tags: newTags,
+          }
           : thesis,
       ),
     )
@@ -266,9 +277,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
         prev.map((thesis, thesisIndex) =>
           thesisIndex === currentIndex
             ? {
-                ...thesis,
-                tags: newTags,
-              }
+              ...thesis,
+              tags: newTags,
+            }
             : thesis,
         ),
       )
@@ -287,9 +298,9 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
       prev.map((thesis, thesisIndex) =>
         thesisIndex === currentIndex
           ? {
-              ...thesis,
-              tags: newTags,
-            }
+            ...thesis,
+            tags: newTags,
+          }
           : thesis,
       ),
     )
@@ -352,382 +363,382 @@ export default function ThesisMetadataEditor({ params }: { params: Promise<{ idx
 
   return (
     <><header className="bg-primary text-primary-foreground sticky top-0 z-10">
-    <div className="container mx-auto px-4">
-      <div className="flex items-center justify-between h-16">
-        <div className="flex items-center">
-          <BookOpen className="h-8 w-8 mr-2" />
-          <span className="text-2xl font-bold">SAAथी</span>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <BookOpen className="h-8 w-8 mr-2" />
+            <span className="text-2xl font-bold">SAAथी</span>
+          </div>
+          <nav className="hidden md:block">
+            <ul className="flex space-x-4">
+              <li>
+                <Link className="hover:text-primary-foreground/80" href="/">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-primary-foreground/80" href="#">
+                  Browse
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-primary-foreground/80" href="#">
+                  My Theses
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
         </div>
-        <nav className="hidden md:block">
-          <ul className="flex space-x-4">
-            <li>
-              <Link className="hover:text-primary-foreground/80" href="/">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-primary-foreground/80" href="#">
-                Browse
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-primary-foreground/80" href="#">
-                My Theses
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        
       </div>
-    </div>
-  </header>
-    <div className="flex h-screen absolute ">
-       
-       
-      <PanelGroup direction="horizontal">
-        {/* Left Panel: Metadata editor */}
-        <Panel defaultSize={30} minSize={20}>
-          <ScrollArea className="h-full p-4">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center mb-4">
-                <Button onClick={goToPrevious} disabled={currentIndex === 0}>
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-       
-                <span className="text-sm">
-                  Thesis {currentIndex + 1} of {theses.length} [{currentThesis.id}]
-                </span>
-                <Button onClick={goToNext} disabled={currentIndex === theses.length - 1}>
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-              <div>
-                <Label htmlFor="title">Title</Label>
-                <div className="flex">
-                  <Input
-                    id="title"
-                    name="title"
-                    value={currentThesis.title}
-                    onChange={handleInputChange}
-                    className="flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis.title)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy title</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="author">Author</Label>
-                <div className="flex">
-                  <Input
-                    id="author"
-                    name="author"
-                    value={currentThesis.author}
-                    onChange={handleInputChange}
-                    className="flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis.author)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy author</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label>Supervisors</Label>
-                  <Button variant="ghost" size="icon" onClick={addSupervisor} className="h-8 w-8">
-                    <Plus className="h-4 w-4" />
+    </header>
+      <div className="flex h-screen absolute ">
+
+
+        <PanelGroup direction="horizontal">
+          {/* Left Panel: Metadata editor */}
+          <Panel defaultSize={30} minSize={20}>
+            <ScrollArea className="h-full p-4">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center mb-4">
+                  <Button onClick={goToPrevious} disabled={currentIndex === 0}>
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+
+                  <span className="text-sm">
+                    Thesis {currentIndex + 1} of {theses.length} [{currentThesis.id}]
+                  </span>
+                  <Button onClick={goToNext} disabled={currentIndex === theses.length - 1}>
+                    <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {currentThesis.supervisors.map((supervisor, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-sm"
-                    >
-                      {editingSupervisor === index ? (
-                        <Input
-                          value={supervisor}
-                          onChange={(e) => handleSupervisorChange(index, e.target.value)}
-                          onBlur={() => handleSupervisorChange(index, supervisor)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleSupervisorChange(index, (e.target as HTMLInputElement).value)
-                            }
-                          }}
-                          className="w-24 h-6 p-0 bg-transparent border-none focus:outline-none focus:ring-0"
-                          autoFocus
-                        />
-                      ) : (
-                        <span onClick={() => setEditingSupervisor(index)} className="cursor-pointer">
-                          {supervisor}
-                        </span>
-                      )}
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
+                <div>
+                  <Label htmlFor="title">Title</Label>
+                  <div className="flex">
+                    <Input
+                      id="title"
+                      name="title"
+                      value={currentThesis.title}
+                      onChange={handleInputChange}
+                      className="flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis.title)}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy title</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="author">Author</Label>
+                  <div className="flex">
+                    <Input
+                      id="author"
+                      name="author"
+                      value={currentThesis.author}
+                      onChange={handleInputChange}
+                      className="flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis.author)}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy author</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label>Supervisors</Label>
+                    <Button variant="ghost" size="icon" onClick={addSupervisor} className="h-8 w-8">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {currentThesis.supervisors.map((supervisor, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-sm"
+                      >
+                        {editingSupervisor === index ? (
+                          <Input
+                            value={supervisor}
+                            onChange={(e) => handleSupervisorChange(index, e.target.value)}
+                            onBlur={() => handleSupervisorChange(index, supervisor)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleSupervisorChange(index, (e.target as HTMLInputElement).value)
+                              }
+                            }}
+                            className="w-24 h-6 p-0 bg-transparent border-none focus:outline-none focus:ring-0"
+                            autoFocus
+                          />
+                        ) : (
+                          <span onClick={() => setEditingSupervisor(index)} className="cursor-pointer">
+                            {supervisor}
+                          </span>
+                        )}
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-4 w-4 ml-1"
+                                onClick={() => copyToClipboard(supervisor)}
+                              >
+                                <Copy className="h-3 w-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Copy supervisor</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-4 w-4 ml-1"
+                          onClick={() => removeSupervisor(index)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="year">Year</Label>
+                  <div className="flex">
+                    <Input
+                      id="year"
+                      name="year"
+                      value={currentThesis.year}
+                      onChange={handleInputChange}
+                      className="flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis.year)}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy year</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="alt-title">Alternative Title</Label>
+                  <div className="flex">
+                    <Input
+                      id="alt-title"
+                      name="alt-title"
+                      value={currentThesis["alt-title"]}
+                      onChange={handleInputChange}
+                      className="flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis["alt-title"])}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy alternative title</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+                <div>
+                  <Label>Tags</Label>
+                  {Object.entries(currentThesis.tags).map(([category, tags]) => (
+                    <div key={category} className="mt-2">
+                      <div className="flex items-center justify-between">
+                        <Label>{category}</Label>
+                        <Button variant="ghost" size="icon" onClick={() => addTag(category)} className="h-8 w-8">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {tags.map((tag, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-sm"
+                          >
+                            {editingTag?.category === category && editingTag.index === index ? (
+                              <Input
+                                value={tag}
+                                onChange={(e) => updateTag(category, index, e.target.value)}
+                                onBlur={() => updateTag(category, index, tag)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    updateTag(category, index, (e.target as HTMLInputElement).value)
+                                  }
+                                }}
+                                className="w-24 h-6 p-0 bg-transparent border-none focus:outline-none focus:ring-0"
+                                autoFocus
+                              />
+                            ) : (
+                              <span onClick={() => setEditingTag({ category, index })} className="cursor-pointer">
+                                {tag}
+                              </span>
+                            )}
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-4 w-4 ml-1"
+                                    onClick={() => copyToClipboard(tag)}
+                                  >
+                                    <Copy className="h-3 w-3" />
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Copy tag</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                             <Button
                               variant="ghost"
                               size="icon"
                               className="h-4 w-4 ml-1"
-                              onClick={() => copyToClipboard(supervisor)}
+                              onClick={() => removeTag(category, index)}
                             >
-                              <Copy className="h-3 w-3" />
+                              <X className="h-3 w-3" />
                             </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Copy supervisor</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-4 w-4 ml-1"
-                        onClick={() => removeSupervisor(index)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="year">Year</Label>
-                <div className="flex">
-                  <Input
-                    id="year"
-                    name="year"
-                    value={currentThesis.year}
-                    onChange={handleInputChange}
-                    className="flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis.year)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy year</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="alt-title">Alternative Title</Label>
-                <div className="flex">
-                  <Input
-                    id="alt-title"
-                    name="alt-title"
-                    value={currentThesis["alt-title"]}
-                    onChange={handleInputChange}
-                    className="flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis["alt-title"])}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy alternative title</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-              <div>
-                <Label>Tags</Label>
-                {Object.entries(currentThesis.tags).map(([category, tags]) => (
-                  <div key={category} className="mt-2">
-                    <div className="flex items-center justify-between">
-                      <Label>{category}</Label>
-                      <Button variant="ghost" size="icon" onClick={() => addTag(category)} className="h-8 w-8">
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {tags.map((tag, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-sm"
-                        >
-                          {editingTag?.category === category && editingTag.index === index ? (
-                            <Input
-                              value={tag}
-                              onChange={(e) => updateTag(category, index, e.target.value)}
-                              onBlur={() => updateTag(category, index, tag)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  updateTag(category, index, (e.target as HTMLInputElement).value)
-                                }
-                              }}
-                              className="w-24 h-6 p-0 bg-transparent border-none focus:outline-none focus:ring-0"
-                              autoFocus
-                            />
-                          ) : (
-                            <span onClick={() => setEditingTag({ category, index })} className="cursor-pointer">
-                              {tag}
-                            </span>
-                          )}
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-4 w-4 ml-1"
-                                  onClick={() => copyToClipboard(tag)}
-                                >
-                                  <Copy className="h-3 w-3" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Copy tag</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <div className="flex">
+                    <Textarea
+                      id="description"
+                      name="description"
+                      value={currentThesis.description}
+                      onChange={handleInputChange}
+                      className="h-32 flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
-                            className="h-4 w-4 ml-1"
-                            onClick={() => removeTag(category, index)}
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis.description)}
                           >
-                            <X className="h-3 w-3" />
+                            <Copy className="h-4 w-4" />
                           </Button>
-                        </div>
-                      ))}
-                    </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy description</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
-                ))}
-              </div>
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <div className="flex">
-                  <Textarea
-                    id="description"
-                    name="description"
-                    value={currentThesis.description}
-                    onChange={handleInputChange}
-                    className="h-32 flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis.description)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy description</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="pdf_url">PDF URL</Label>
-                <div className="flex">
-                  <Input
-                    id="pdf_url"
-                    name="pdf_url"
-                    value={currentThesis.pdf_url}
-                    onChange={handleInputChange}
-                    className="flex-grow"
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="ml-2"
-                          onClick={() => copyToClipboard(currentThesis.pdf_url)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Copy PDF URL</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div>
+                  <Label htmlFor="pdf_url">PDF URL</Label>
+                  <div className="flex">
+                    <Input
+                      id="pdf_url"
+                      name="pdf_url"
+                      value={currentThesis.pdf_url}
+                      onChange={handleInputChange}
+                      className="flex-grow"
+                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="ml-2"
+                            onClick={() => copyToClipboard(currentThesis.pdf_url)}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy PDF URL</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </div>
+                {hasLocalChanges && (
+                  <div className="mt-6">
+                    <Button onClick={syncChangesToSource} className="w-full">
+                      Sync Changes to Source
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2 text-center">
+                      Changes are currently saved to local storage only
+                    </p>
+                  </div>
+                )}
               </div>
-              {hasLocalChanges && (
-                <div className="mt-6">
-                  <Button onClick={syncChangesToSource} className="w-full">
-                    Sync Changes to Source
-                  </Button>
-                  <p className="text-xs text-muted-foreground mt-2 text-center">
-                    Changes are currently saved to local storage only
-                  </p>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
-        </Panel>
-        <PanelResizeHandle className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 active:bg-gray-500" />
+            </ScrollArea>
+          </Panel>
+          <PanelResizeHandle className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 active:bg-gray-500" />
 
-        <Panel defaultSize={70} minSize={20}>
-          {currentThesis.pdf_url ? (
-            <iframe src={currentThesis.pdf_url} className="w-full h-full" />
-          ) : (
-            <div className="flex items-center justify-center h-full bg-gray-100">No PDF available</div>
-          )}
-        </Panel>
-      </PanelGroup>
-      {showCopyAlert && (
-        <Alert className="fixed bottom-4 right-4 w-auto">
-          <AlertDescription>Copied to clipboard!</AlertDescription>
-        </Alert>
-      )}
-    </div></>
+          <Panel defaultSize={70} minSize={20}>
+
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+              <Viewer fileUrl={currentThesis.pdf_url} plugins={[defaultLayoutPluginInstance]} />
+              {/* </div> */}
+            </Worker>
+          </Panel>
+        </PanelGroup>
+        {showCopyAlert && (
+          <Alert className="fixed bottom-4 right-4 w-auto">
+            <AlertDescription>Copied to clipboard!</AlertDescription>
+          </Alert>
+        )}
+      </div></>
   )
 }
